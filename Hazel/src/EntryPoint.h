@@ -20,6 +20,7 @@
   ---> needs to be declared outside of a function (at 'file scope') and without 
   ---> 'static' keyword  */
 extern Hazel::Application* Hazel::CreateApplication(); 
+//end: extern Hazel::Application* declaration --> defined in SandboxApp.cpp
 
 int main (int argc, char** argv) {
     
