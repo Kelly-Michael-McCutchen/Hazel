@@ -1,0 +1,16 @@
+compiler flags: 
+-c: compile or assemble source filess, but do not link 
+    default, object file name for source file is made by replacing .c, etc with .o 
+
+-S: stop after compilation proper; do not assemble 
+    output is in the form of an assembler code file for each non-assembler input specified
+    default: replace .c, etc. with .s 
+
+-o: place output in file 'file' 
+    default if not used: 
+        place executable in a.out, object file for source.suffix in source.o, assembler in source.s, precompiled header file in source.suffix.gch, 
+        all preprocessed C source on standard output
+    
+gcc: use of it does not add C++ library 
+g++ : program calls GCC and automatically specifies linking against C++ library 
+        treats c files as cpp files 

@@ -1,0 +1,32 @@
+places: 
+https://github.com/topics/p2p?l=java&o=asc&s=forks (github: topics: p2p) 
+
+terms: 
+    gossip-based protocols to maintain overlay network on top of computing nodes 
+    partition resources into multiple slices so failure of node does not compromise overall structure 
+    dynamic random graph overlay 
+    Remote Communication Management 
+
+    cloud architecture: 
+        on-demand self service: ability to provide computing capabilities (CPU time, storage) dynamically
+        Network access: resources can be accessed through the network using standard mechanisms (normally HTTP protocol)
+        Resource Pooling: virtual and physical resources can be pooled and assigned dynamically to clients according to demand
+        Elasticity: resources can be provisioned dynamically in order to enable customer application to scale up and down quickly 
+        Measured Service: cloud resource and service usages are optimzed through a pay-per-use business model 
+
+        P2P cloud : distributed, multi-user/agent systems 
+
+        Peer Sampling Service (PSS) : provides each node with list of peers to exchange messages
+            achieved by maintaining an unstructured overlay over set of peers 
+            PSS is implemented as a simple Gossip protocol 
+                : each node maintains a list of k>0 neighbors, called 'local view' 
+                : each element in local view contains the ID (e.g. IP address) of a neighbor and timestamp when neighbor was first added 
+                : periodically, neighbors exchange and merge their local views, removing oldest entries so number of neighbors equals k 
+                : local views are dynamic; at each message exchange a new view is constructed 
+                : set of neighbors of each node is constantly changing, resulting in dynamic random graph overlay 
+                : PSS uses Bootstrapping Service to gather initial set of nodes to start the message exchange 
+                : currently, bootstrap is performed from a file containing the IP address of all nodes
+            Slicing Service: 
+                : used to rank nodes according to one or more attributes 
+                : used to request slices of the whole cloud (i.e. 5% of total number of nodes, top 1% fastest, so on) 
+            Aggregation Service: used to compute global measures using local message exchanges 

@@ -1,0 +1,26 @@
+dynamic/static libraries
+
+    engine: depends on certain libraries 
+    link all files into single dll 
+    then link dll into game 
+    
+
+    ::create static libraries
+    ::create engine dll
+    ::link game engine dll into game 
+
+
+hot swapping: 
+    OS functionality: file change notifications or simply poll regularly 
+    can hook scripting languages/interpreter to in-game console, network socket, etc. for 
+        runtime flexibility 
+    can use dll or overlays, shared libraries
+
+    :have clean interface for plugins, just use dynamic libraries that can be loaded and 
+        unloaded : nearly all platforms support dynamic loading and unloading of libraries
+            --> view had to be recreated, but application did not need to be shutdown
+
+    also, check out Boost.Reflection and Boost.Extension 
+
+
+    -also consider runtime compilation : https://stackoverflow.com/questions/11016078/is-it-possible-to-create-a-function-dynamically-during-runtime-in-c

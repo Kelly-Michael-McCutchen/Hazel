@@ -1,0 +1,60 @@
+from cprogramming.com
+
+What happens from source code to running program: 
+
+1. C Preprocessor: This stage processes all Preprocessor directives (any line such as #define, #include) 
+2. Compilation Proper: Once source file has been Preprocessed, then compiled (many people refer to whole build process as compilation) 
+    this stage turns a .c file into an .o file
+3. Linking: Where all object files and libraries are linked together to make final program. 
+            Static libraries: library is placed in final program 
+            Shared Libraries: only a reference to the library is placed inside
+            Launch program from shell, program is handed off to the loader
+4. Loading: stage happens when your program starts up. Program is scanned for references to shared libraries. References are resolved and libraries are mapped into your program 
+
+
+foo.h: 
+    #ifndef foo_h__
+    #define foo_h__
+    extern void food (void); 
+    #endif //foo.h
+
+foo.c: 
+    #include <stdio.h> 
+    void foo(void) 
+    {puts ("Hello, I am a shared library"); }
+
+main.c: 
+    #include <stdio.h> 
+    #include "foo.h" 
+    int main (void) {
+        puts("This is a shared library test..."); 
+        foo(); 
+        return 0; 
+    }
+
+    foo.h defines interface to our library, a single function foo(). foo.c contains implementation of that function, main.c is a driver program using our library 
+
+    (main difference)
+COMPILING: 
+    step 1: compiling with Position Independent Code: 
+        gcc -c -Wall -Werror -fpic foo.c
+    step 2: creating shared library from an object file: 
+            we need to turn this object file into a shared library. will call it 'libfoo.so' 
+        gcc -shared -o libfoo.so foo.o 
+    step 3: linking with shared library 
+        now we have a shared library. now we compile our main.c and link it with libfoo 
+        will call final program 'test' : note, -lfoo option is not looking for foo.o but libfoo.so 
+        GCC assumes all libraries start with lib and end with .so or .a 
+            --> .so is for shared object or shared libraries
+                .a is for archive or statically linked libraries 
+        gcc -Wall -o test main.c -lfoo --> may return error (ld returned 1 exit status) (can't find!!!) 
+            telling GCC where to find shared library: 
+        gcc -L/my/directory/with/foo -Wall -o test main.c -lfoo 
+
+        export LD_LIBRARY_PATH=/my/directory/with/food:$LD_LIBRARY_PATH
+        ./test
+
+    working with rpath and clearing LD_LIBRARY_PATH: 
+        unset LD_LIBRARY_PATH
+        gcc -L/my/directory/with/foo -Wl, -rpath=/my/directory/with/foo -Wall -o test main.c -lfoo 
+        ./test 

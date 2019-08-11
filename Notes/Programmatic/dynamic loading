@@ -1,0 +1,122 @@
+.dll --> dynamic library 
+.lib --> defines functions available 
+http://www.gnu.org/software/libtool/libtool.html
+
+http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html --> linux how to (good page!) 
+libraries: software design known as "shared components" or "archive libraries" 
+    group together compiled object code files into single file known as library 
+
+typical functions/classes capable of being shared across applications are broken from source code 
+
+c standard libraries and c++ stl are examples of shared components which can be linked 
+
+
+2 linux c/c++ library types: 
+    static libraries (.a) : library of object code linked with
+    dynamically linked shared object libraries (.so): one form, two uses
+        1.) dynamically linked at run time 
+        2.) dynamically loaded/unloaded and linked during execution 
+            i.e. browser plugin using dynamic linking loader system functions 
+
+
+DYNAMIC LINKING LOADER SYSTEM FUNCTIONS??? (hot swap?) 
+ 
+ (from: http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html)
+    : gcc src-file.c -lm -lpthread 
+        --> libraries are 'm' (math) and 'pthread' (thread library) 
+            --> found in libm.a and libpthread.a
+
+
+How to generate a static library: (object code archive file) 
+    compile: cc -Wall -c ctest1.c ctest2.c 
+    compiler options: -Wall (include warnings) 
+    create library "libctest.a" : ar -cvq libctest.a ctest1.o ctest2.o 
+    list files in library: ar -t libctest.a
+    linking with the library: cc -o executable-name prog.c libctest.a
+                              cc -o executable-name prog.c -L/path/to/library-directory -libctest
+
+
+Generating a dynamically linked "shared object" library (.so) 
+1.) Create Object code
+2.) Create library 
+3.) Optional: create default version using a symbolic link (??) 
+
+    library creation example: 
+    gcc -Wall -fPIC -c *.c
+    gcc -shared -Wl, -soname,libctest.so.1 -o libctest.so.1.0 *.o 
+    mv libctest.so.1.0 /opt/lib
+    ln -sf /opt/lib/libctest.so.1.0 /opt/lib/libctest.so.1
+    ln -sf /opt/lib/libctest.so.1.0 /opt/lib/libctest.so
+    --> creates library libctest.so.1.0 and symbolic links to it 
+
+    compiling for run-time linking with a dynamically linked libctest.so.1.0: 
+    gcc -Wall -I/path/to/include-files -L/path/to/libraries prog.c -lctest -o prog
+    Use: 
+        gcc -Wall -L/opt/lib prog.c -lctest -o prog
+        (name of library is libctest.so )
+
+
+Dynamic Loading and un-loading of shared libraries using libdl: 
+
+    These libraries are dynamically loaded/unloaded and linked during execution
+    Useful for creating "Plug-in" architecturecd 
+
+    prototype include file for the library: ctest.h
+        #ifndef CTEST_H
+        #define CTEST_H
+
+        #ifdef __cplusplus
+        extern "C" {
+        #endif
+        void ctest1(int *); 
+        void ctest2(int *); 
+
+        #ifdef __cplusplus
+        }
+        #endif
+        #endif
+        --> use extern "C" so libraries can be used with C and C++
+
+        load and unload the library libctest.so (created above) dynamically
+
+/*  =====================================   */ 
+#include <stdio.h>
+#include <dlfcn.h>
+#include "ctest.h"
+
+int main(int argc, char **argv) 
+{
+   void *lib_handle;
+   double (*fn)(int *);
+   int x;
+   char *error;
+
+   lib_handle = dlopen("/opt/lib/libctest.so", RTLD_LAZY);
+   if (!lib_handle) 
+   {
+      fprintf(stderr, "%s\n", dlerror());
+      exit(1);
+   }
+
+   fn = dlsym(lib_handle, "ctest1");
+   if ((error = dlerror()) != NULL)  
+   {
+      fprintf(stderr, "%s\n", error);
+      exit(1);
+   }
+
+   (*fn)(&x);
+   printf("Valx=%d\n",x);
+
+   dlclose(lib_handle);
+   return 0;
+}
+
+gcc -rdynamic -o progdl progdl.c -ldl
+/*=========================================*/ 
+
+
+
+also: 
+https://developer.gnome.org/glib/2.32/glib-Dynamic-Loading-of-Modules.html
+

@@ -1,0 +1,28 @@
+What do we need:  github account /TheCherno : Hazel Engine 
+
+Entry Point: game vs. client control; 
+	Primitive Building blocks: 
+
+Application Layer: 
+	How are events handled? 
+
+Window Layer: 
+	Only exist on main platforms (windows, os, unix)
+	-Input 
+	-events
+		Event Managers 
+		Entity/Component System 
+	-Renderer (Biggest/Most complicated system) 
+		: Renderer is big stuff --> true (colored pixels are nice) 
+	-Render API abstraction: 
+		multiple rendering api (OPENGL--> simplest, cross platform, DirectX
+	-Debugging Support 
+		:Logging System 
+	-Scripting language (python, lua, c#, etc.) 
+	-Memory System (custom allocators, custom tracking) 
+		:Performance, important to manage well 
+	-Entity Component System (ECS) 
+	-Physics Solutions
+	-File I/O, VFS 
+	-Build system, custom asset types (3D models, custom types/textures) 
+		:Hot Swappable Assets (Draw item in photoshop, update realtime in engine) 

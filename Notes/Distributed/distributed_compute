@@ -1,0 +1,31 @@
+CORBA: http://www.yolinux.com/TUTORIALS/CORBA.html
+
+        corba.org/
+
+    Common Object Request Broker Architecture (CORBA) 
+        -Defined by OMG Spec
+        -Allows clients to invoke operations on distributed objects
+        -without concern for location, programming language of remote service, os, platform (32 or 64 bit word size)
+            or communications protocol (TPC/IP, IPX, FDDI, ATM) 
+        -CORBA is a support framework of applications, libraries, and services  for 
+            making distributed procedure calls 
+        -Program on computer 'C' (CORBA) client calls a function computed and processed on 
+        computer node 'S' (CORBA server) and passes to it function arguments 
+        -The function/method passes arguments and returns values as with any other c/C++ call except
+        it may be distributed across the network so protions of the program may be executed on a remote machine
+
+        interface between client and server is defined by the CORBA IDL language
+
+        remote function/method may start programs (fork/exec) on remote computer or 
+            run 4remote sevices unquely available to the remote computer and then return data
+        
+
+-CORBA is effectively a communications protocol 
+    IDL (CORBA lang) is compiled to desired language 
+    code can then be linked? 
+
+
+After advancements in the field, trackerless torrents were invented. This was an upgrade to the BitTorrent protocol that
+ did not rely on centralized trackers for gathering metadata and finding peers but instead use new algorithms. 
+ One such instance is Kademlia (Mainline DHT), a distributed hash table (DHT) which allows you to find peers through other peers. 
+In effect, each user performs a tracker’s duties.
